@@ -139,6 +139,12 @@ no duplicate open (pending/confirmed) order per listing+customer. Every transiti
 Authorization: `OrderPolicy` — `respond` (owner: confirm/decline/complete), `act` (customer: cancel/review).
 Review: only customer of a **completed** order, once (`order_id` unique); reply once by the subject.
 
+**Per-order chat:** customer and owner message each other to agree on terms — `order_messages` table,
+thread page `account.orders.show` (`/account/orders/{id}`), composer open only while pending/confirmed
+(`Order::allowsMessages()`), read-only afterwards. Opening the thread marks the counterpart's messages
+read; orders index shows unread badges; recipient gets a queued `OrderMessageMail` only for the first
+unread message (no flooding). Access via `OrderPolicy::view` (parties only).
+
 ## 8. Routes (all inside `/{locale}` group, names unprefixed)
 
 Public (SEO URL scheme):
