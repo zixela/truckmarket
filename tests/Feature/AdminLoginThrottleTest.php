@@ -2,6 +2,7 @@
 
 use App\Enums\UserRole;
 use App\Filament\Auth\Login;
+use App\Models\Setting;
 use App\Models\User;
 use Database\Seeders\RoleSeeder;
 use Filament\Facades\Filament;
@@ -36,6 +37,23 @@ it('blocks the admin login for 5 minutes after 4 failed attempts', function () {
 
     // After the 5-minute window the correct password works again.
     $this->travel(301)->seconds();
+    attemptLogin('password');
+    expect(auth()->check())->toBeTrue();
+});
+
+it('honours admin-managed attempt and lockout settings', function () {
+    Setting::query()->updateOrCreate(['key' => 'admin_login_max_attempts'], ['value' => '2']);
+    Setting::query()->updateOrCreate(['key' => 'admin_login_lockout_minutes'], ['value' => '1']);
+
+    attemptLogin('wrong-password')->assertHasFormErrors();
+    attemptLogin('wrong-password')->assertHasFormErrors();
+
+    // 3rd attempt blocked (limit lowered to 2).
+    attemptLogin('password')->assertNotified();
+    expect(auth()->check())->toBeFalse();
+
+    // Lockout shortened to 1 minute.
+    $this->travel(61)->seconds();
     attemptLogin('password');
     expect(auth()->check())->toBeTrue();
 });
