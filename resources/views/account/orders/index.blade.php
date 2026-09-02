@@ -45,6 +45,13 @@
                 @endif
 
                 <div class="mt-3 flex flex-wrap gap-2">
+                    <a href="{{ route('account.orders.show', $order) }}"
+                       class="rounded-md border border-brand-300 px-3 py-1.5 text-xs font-medium text-brand-600 hover:bg-brand-50">
+                        💬 {{ __('orders.chat_open') }}
+                        @if ($order->unread_count)
+                            <span class="ml-1 rounded-full bg-brand-500 px-1.5 text-white">{{ $order->unread_count }}</span>
+                        @endif
+                    </a>
                     @if ($order->status === \App\Enums\OrderStatus::Pending)
                         <form method="POST" action="{{ route('account.orders.confirm', $order) }}">
                             @csrf
@@ -96,6 +103,13 @@
                 </div>
 
                 <div class="mt-3 flex flex-wrap gap-2">
+                    <a href="{{ route('account.orders.show', $order) }}"
+                       class="rounded-md border border-brand-300 px-3 py-1.5 text-xs font-medium text-brand-600 hover:bg-brand-50">
+                        💬 {{ __('orders.chat_open') }}
+                        @if ($order->unread_count)
+                            <span class="ml-1 rounded-full bg-brand-500 px-1.5 text-white">{{ $order->unread_count }}</span>
+                        @endif
+                    </a>
                     @if ($order->status === \App\Enums\OrderStatus::Pending)
                         <form method="POST" action="{{ route('account.orders.cancel', $order) }}">
                             @csrf

@@ -34,6 +34,13 @@ return [
     'owner' => 'Owner',
     'leave_review' => 'Leave a review',
 
+    'chat_open' => 'Messages',
+    'chat_with' => 'Conversation with',
+    'chat_empty' => 'No messages yet. Discuss the terms of this order here.',
+    'chat_placeholder' => 'Write a message...',
+    'chat_send' => 'Send',
+    'chat_closed' => 'Messaging is available while the order is pending or confirmed.',
+
     'mail' => [
         'created_subject' => 'New order for your listing',
         'created_line' => ':customer wants to order ":listing".',
@@ -45,6 +52,8 @@ return [
         'completed_line' => 'The order for ":listing" is completed. You can now leave a review.',
         'cancelled_subject' => 'Order cancelled',
         'cancelled_line' => ':customer cancelled the order for ":listing".',
+        'message_subject' => 'New message about your order',
+        'message_line' => ':sender sent you a message about ":listing".',
         'view_order' => 'View order',
     ],
 ];

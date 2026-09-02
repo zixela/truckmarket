@@ -21,16 +21,37 @@ class OrderController extends Controller
     {
         $user = $request->user();
 
+        $unreadCount = fn ($query) => $query
+            ->where('sender_id', '!=', $user->id)
+            ->whereNull('read_at');
+
         return view('account.orders.index', [
             'incoming' => $user->receivedOrders()
                 ->with(['listing', 'customer'])
+                ->withCount(['messages as unread_count' => $unreadCount])
                 ->latest()
                 ->paginate(10, ['*'], 'incoming'),
             'outgoing' => $user->placedOrders()
                 ->with(['listing', 'owner', 'review'])
+                ->withCount(['messages as unread_count' => $unreadCount])
                 ->latest()
                 ->paginate(10, ['*'], 'outgoing'),
         ]);
+    }
+
+    public function show(Request $request, Order $order): View
+    {
+        $this->authorize('view', $order);
+
+        $order->load(['listing', 'customer', 'owner', 'messages.sender']);
+
+        // Opening the thread marks the other party's messages as read.
+        $order->messages()
+            ->where('sender_id', '!=', $request->user()->id)
+            ->whereNull('read_at')
+            ->update(['read_at' => now()]);
+
+        return view('account.orders.show', ['order' => $order]);
     }
 
     public function store(Request $request, Listing $listing): RedirectResponse

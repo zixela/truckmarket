@@ -34,6 +34,13 @@ return [
     'owner' => 'Владелец',
     'leave_review' => 'Оставить отзыв',
 
+    'chat_open' => 'Сообщения',
+    'chat_with' => 'Переписка с',
+    'chat_empty' => 'Сообщений пока нет. Обсудите здесь условия заказа.',
+    'chat_placeholder' => 'Напишите сообщение...',
+    'chat_send' => 'Отправить',
+    'chat_closed' => 'Переписка доступна, пока заказ ожидает или подтверждён.',
+
     'mail' => [
         'created_subject' => 'Новый заказ по вашему объявлению',
         'created_line' => ':customer хочет заказать «:listing».',
@@ -45,6 +52,8 @@ return [
         'completed_line' => 'Заказ по «:listing» завершён. Теперь вы можете оставить отзыв.',
         'cancelled_subject' => 'Заказ отменён',
         'cancelled_line' => ':customer отменил заказ по «:listing».',
+        'message_subject' => 'Новое сообщение по вашему заказу',
+        'message_line' => ':sender отправил вам сообщение по «:listing».',
         'view_order' => 'Открыть заказ',
     ],
 ];

@@ -79,6 +79,8 @@ Route::prefix('{locale}')
                     Route::delete('/listings/{listing}', [Account\ListingController::class, 'destroy'])->name('listings.destroy');
 
                     Route::get('/orders', [Account\OrderController::class, 'index'])->name('orders.index');
+                    Route::get('/orders/{order}', [Account\OrderController::class, 'show'])->name('orders.show');
+                    Route::post('/orders/{order}/messages', [Account\OrderMessageController::class, 'store'])->name('orders.messages.store');
                     Route::post('/listings/{listing}/orders', [Account\OrderController::class, 'store'])->name('orders.store');
                     Route::post('/orders/{order}/confirm', [Account\OrderController::class, 'confirm'])->name('orders.confirm');
                     Route::post('/orders/{order}/decline', [Account\OrderController::class, 'decline'])->name('orders.decline');
