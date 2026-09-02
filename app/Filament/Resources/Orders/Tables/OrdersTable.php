@@ -45,6 +45,11 @@ class OrdersTable
             ->filters([
                 SelectFilter::make('status')
                     ->options(collect(OrderStatus::cases())->mapWithKeys(fn ($s) => [$s->value => $s->label()])),
+                SelectFilter::make('payment_status')
+                    ->options([
+                        'pending' => 'Awaiting payment',
+                        'paid' => 'Paid',
+                    ]),
             ])
             ->recordActions([
                 EditAction::make(),
