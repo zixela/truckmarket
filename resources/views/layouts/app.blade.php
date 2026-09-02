@@ -18,6 +18,7 @@
             <a href="{{ route('listings.type', ['typeSlug' => \App\Enums\ListingType::Truck->slug()]) }}" class="rounded-md px-3 py-2 hover:bg-gray-100">{{ __('common.marketplace') }}</a>
 
             @auth
+                <x-notification-bell />
                 <a href="{{ route('account.listings.index') }}" class="rounded-md px-3 py-2 hover:bg-gray-100">{{ __('common.my_account') }}</a>
                 @if (auth()->user()->isAdmin())
                     <a href="{{ url('/admin') }}" class="rounded-md px-3 py-2 hover:bg-gray-100">{{ __('common.admin_panel') }}</a>

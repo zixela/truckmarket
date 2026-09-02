@@ -34,4 +34,8 @@ return [
     'date' => 'Дата',
     'open_marketplace' => 'Открыть маркетплейс',
     'admin_panel' => 'Админ-панель',
+    'notifications' => 'Уведомления',
+    'notifications_empty' => 'Новых уведомлений нет.',
+    'notifications_new_orders' => 'Новые заказы',
+    'notifications_unread_messages' => 'Непрочитанные сообщения',
 ];

@@ -34,4 +34,8 @@ return [
     'date' => 'Date',
     'open_marketplace' => 'Open Marketplace',
     'admin_panel' => 'Admin panel',
+    'notifications' => 'Notifications',
+    'notifications_empty' => 'No new notifications.',
+    'notifications_new_orders' => 'New orders',
+    'notifications_unread_messages' => 'Unread messages',
 ];
