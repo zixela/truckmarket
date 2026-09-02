@@ -1,0 +1,58 @@
+<?php
+
+return [
+    'failed' => 'These credentials do not match our records.',
+    'password' => 'The provided password is incorrect.',
+    'throttle' => 'Too many attempts. Please try again in :seconds seconds.',
+
+    'login_title' => 'Log in to TruckMarket',
+    'register_title' => 'Create your account',
+    'name' => 'Full name',
+    'email' => 'Email',
+    'password_field' => 'Password',
+    'password_confirm' => 'Confirm password',
+    'remember_me' => 'Remember me',
+    'forgot_password' => 'Forgot your password?',
+    'reset_password' => 'Reset password',
+    'send_reset_link' => 'Send password reset link',
+    'have_account' => 'Already have an account?',
+    'no_account' => 'Do not have an account?',
+    'role' => 'I am registering as',
+    'continue_with_google' => 'Continue with Google',
+    'or' => 'or',
+    'account_blocked' => 'This account has been blocked.',
+
+    'verify_title' => 'Confirm your email',
+    'verify_intro' => 'We sent a 6-digit code to :email. Enter it below to activate your account.',
+    'verify_code' => 'Verification code',
+    'verify_submit' => 'Confirm',
+    'verify_resend' => 'Send a new code',
+    'verify_sent' => 'A new code has been sent to your email.',
+    'verify_invalid' => 'The code is invalid or has expired.',
+    'verify_success' => 'Your email has been confirmed.',
+    'verify_required' => 'Please confirm your email to continue.',
+    'verify_throttle' => 'Please wait before requesting another code.',
+
+    'code_mail_subject' => 'Your TruckMarket verification code',
+    'code_mail_line' => 'Use this code to confirm your email address:',
+    'code_mail_expires' => 'The code expires in :minutes minutes.',
+    'code_mail_ignore' => 'If you did not create an account, you can ignore this email.',
+
+    'company_name' => 'Company name',
+    'company_number' => 'Company number (USDOT)',
+    'company_number_hint' => 'Your USDOT number — we check it against the FMCSA registry.',
+    'company_phone' => 'Company phone',
+    'company_phone_hint' => 'We will send an SMS confirmation code to this number.',
+    'company_invalid' => 'We could not verify this company: the number was not found or the name does not match the registry.',
+
+    'phone_verify_title' => 'Confirm your company phone',
+    'phone_verify_intro' => 'We sent a 6-digit code by SMS to :phone. Enter it below.',
+    'phone_verified' => 'Your phone number has been confirmed.',
+    'sms_resend' => 'Send a new SMS code',
+    'sms_sent' => 'A new code has been sent by SMS.',
+    'sms_code_text' => 'TruckMarket verification code: :code',
+
+    'choose_role_title' => 'Choose your account type',
+    'choose_role_intro' => 'Tell us who you are so we can set up your profile.',
+    'google_failed' => 'Google sign-in failed. Please try again.',
+];

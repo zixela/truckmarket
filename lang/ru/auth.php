@@ -1,0 +1,58 @@
+<?php
+
+return [
+    'failed' => 'Неверные учётные данные.',
+    'password' => 'Указан неверный пароль.',
+    'throttle' => 'Слишком много попыток. Повторите через :seconds секунд.',
+
+    'login_title' => 'Вход в TruckMarket',
+    'register_title' => 'Создание аккаунта',
+    'name' => 'Полное имя',
+    'email' => 'Email',
+    'password_field' => 'Пароль',
+    'password_confirm' => 'Подтвердите пароль',
+    'remember_me' => 'Запомнить меня',
+    'forgot_password' => 'Забыли пароль?',
+    'reset_password' => 'Сброс пароля',
+    'send_reset_link' => 'Отправить ссылку для сброса',
+    'have_account' => 'Уже есть аккаунт?',
+    'no_account' => 'Нет аккаунта?',
+    'role' => 'Я регистрируюсь как',
+    'continue_with_google' => 'Продолжить через Google',
+    'or' => 'или',
+    'account_blocked' => 'Этот аккаунт заблокирован.',
+
+    'verify_title' => 'Подтвердите email',
+    'verify_intro' => 'Мы отправили 6-значный код на :email. Введите его ниже, чтобы активировать аккаунт.',
+    'verify_code' => 'Код подтверждения',
+    'verify_submit' => 'Подтвердить',
+    'verify_resend' => 'Отправить новый код',
+    'verify_sent' => 'Новый код отправлен на вашу почту.',
+    'verify_invalid' => 'Код неверный или истёк.',
+    'verify_success' => 'Ваш email подтверждён.',
+    'verify_required' => 'Подтвердите email, чтобы продолжить.',
+    'verify_throttle' => 'Подождите перед запросом нового кода.',
+
+    'code_mail_subject' => 'Ваш код подтверждения TruckMarket',
+    'code_mail_line' => 'Используйте этот код для подтверждения email:',
+    'code_mail_expires' => 'Код действителен :minutes минут.',
+    'code_mail_ignore' => 'Если вы не регистрировались, просто игнорируйте это письмо.',
+
+    'company_name' => 'Название компании',
+    'company_number' => 'Номер компании (USDOT)',
+    'company_number_hint' => 'Ваш номер USDOT — мы проверяем его по реестру FMCSA.',
+    'company_phone' => 'Телефон компании',
+    'company_phone_hint' => 'На этот номер придёт SMS с кодом подтверждения.',
+    'company_invalid' => 'Не удалось проверить компанию: номер не найден или название не совпадает с реестром.',
+
+    'phone_verify_title' => 'Подтвердите телефон компании',
+    'phone_verify_intro' => 'Мы отправили 6-значный код по SMS на :phone. Введите его ниже.',
+    'phone_verified' => 'Номер телефона подтверждён.',
+    'sms_resend' => 'Отправить новый SMS-код',
+    'sms_sent' => 'Новый код отправлен по SMS.',
+    'sms_code_text' => 'Код подтверждения TruckMarket: :code',
+
+    'choose_role_title' => 'Выберите тип аккаунта',
+    'choose_role_intro' => 'Укажите, кто вы, чтобы мы настроили ваш профиль.',
+    'google_failed' => 'Не удалось войти через Google. Попробуйте ещё раз.',
+];
