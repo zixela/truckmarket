@@ -24,8 +24,32 @@
             • {{ $order->created_at->format('M d, Y H:i') }}
         </div>
     </div>
-    <span class="rounded-full px-3 py-1 text-xs font-medium {{ $badge }}">{{ $order->status->label() }}</span>
+    <div class="flex items-center gap-2">
+        @if ($order->isPaid())
+            <span class="rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-800">
+                ✓ {{ __('orders.paid') }} (${{ number_format((float) $order->payment_amount, 2) }})
+            </span>
+        @elseif ($order->awaitsPayment())
+            <span class="rounded-full bg-orange-100 px-3 py-1 text-xs font-medium text-orange-800">
+                {{ __('orders.payment_pending') }}
+            </span>
+        @endif
+        <span class="rounded-full px-3 py-1 text-xs font-medium {{ $badge }}">{{ $order->status->label() }}</span>
+    </div>
 </div>
+
+@if ($order->awaitsPayment() && $me->id === $order->customer_id)
+    <form method="POST" action="{{ route('account.orders.pay', $order) }}"
+          class="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-orange-200 bg-orange-50 p-4">
+        @csrf
+        <div class="text-sm text-orange-900">
+            {{ __('orders.payment_request', ['amount' => number_format((float) $order->payment_amount, 2)]) }}
+        </div>
+        <button type="submit" class="rounded-md bg-brand-500 px-5 py-2 text-sm font-medium text-white hover:bg-brand-600">
+            💳 {{ __('orders.pay_now', ['amount' => number_format((float) $order->payment_amount, 2)]) }}
+        </button>
+    </form>
+@endif
 
 @if ($order->message)
     <div class="rounded-lg border border-gray-200 bg-gray-50 p-3 text-sm text-gray-700">

@@ -41,6 +41,14 @@ return [
     'chat_send' => 'Send',
     'chat_closed' => 'Messaging is available while the order is pending or confirmed.',
 
+    'paid' => 'Paid',
+    'payment_pending' => 'Payment pending',
+    'payment_request' => 'The order is confirmed. Please pay $:amount to proceed.',
+    'pay_now' => 'Pay $:amount',
+    'payment_success' => 'Payment received. Thank you!',
+    'payment_not_required' => 'This order does not require a payment.',
+    'payment_unavailable' => 'The payment service is temporarily unavailable. Please try again later.',
+
     'mail' => [
         'created_subject' => 'New order for your listing',
         'created_line' => ':customer wants to order ":listing".',

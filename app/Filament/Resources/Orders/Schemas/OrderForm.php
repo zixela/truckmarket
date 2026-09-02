@@ -6,6 +6,7 @@ use App\Enums\OrderStatus;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 
 class OrderForm
@@ -33,6 +34,19 @@ class OrderForm
                     ->columnSpanFull(),
                 DateTimePicker::make('confirmed_at'),
                 DateTimePicker::make('completed_at'),
+                TextInput::make('payment_amount')
+                    ->label('Charge amount (USD)')
+                    ->numeric()
+                    ->minValue(0.5)
+                    ->prefix('$')
+                    ->helperText('Charged to the customer when the order is confirmed (payments must be enabled in Settings).'),
+                Select::make('payment_status')
+                    ->options([
+                        'pending' => 'Pending',
+                        'paid' => 'Paid',
+                    ])
+                    ->placeholder('Not requested'),
+                DateTimePicker::make('paid_at'),
             ]);
     }
 }

@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Listing;
 use App\Models\Order;
 use App\Services\OrderService;
+use App\Services\Payments\PaymentGateway;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -44,6 +45,13 @@ class OrderController extends Controller
         $this->authorize('view', $order);
 
         $order->load(['listing', 'customer', 'owner', 'messages.sender']);
+
+        // Returning from Stripe Checkout — verify and settle the payment.
+        if ($request->query('payment') === 'success'
+            && $request->user()->id === $order->customer_id
+            && OrderPaymentController::settle($order, app(PaymentGateway::class))) {
+            session()->flash('status', __('orders.payment_success'));
+        }
 
         // Opening the thread marks the other party's messages as read.
         $order->messages()

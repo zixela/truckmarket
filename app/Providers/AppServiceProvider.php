@@ -5,6 +5,9 @@ namespace App\Providers;
 use App\Services\CompanyVerification\CompanyVerifier;
 use App\Services\CompanyVerification\FmcsaCompanyVerifier;
 use App\Services\CompanyVerification\NullCompanyVerifier;
+use App\Services\Payments\NullGateway;
+use App\Services\Payments\PaymentGateway;
+use App\Services\Payments\StripeGateway;
 use App\Services\Sms\LogSmsSender;
 use App\Services\Sms\SmsSender;
 use App\Services\Sms\TwilioSmsSender;
@@ -20,6 +23,12 @@ class AppServiceProvider extends ServiceProvider
             return $webKey
                 ? new FmcsaCompanyVerifier($webKey)
                 : new NullCompanyVerifier;
+        });
+
+        $this->app->bind(PaymentGateway::class, function () {
+            $secret = config('services.stripe.secret');
+
+            return $secret ? new StripeGateway($secret) : new NullGateway;
         });
 
         $this->app->bind(SmsSender::class, function () {

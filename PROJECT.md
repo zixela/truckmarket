@@ -139,6 +139,16 @@ no duplicate open (pending/confirmed) order per listing+customer. Every transiti
 Authorization: `OrderPolicy` — `respond` (owner: confirm/decline/complete), `act` (customer: cancel/review).
 Review: only customer of a **completed** order, once (`order_id` unique); reply once by the subject.
 
+**Stripe payments (admin-controlled):** on owner confirm, if payments are enabled and an amount is
+resolvable, `orders.payment_status` becomes `pending` and the customer sees a "Pay $X" button on the
+order page → Stripe **Checkout** hosted session (`StripeGateway`, raw HTTP, `STRIPE_SECRET` in .env;
+no key → `NullGateway`, pay attempt shows "unavailable"). Return URL `?payment=success` re-checks the
+session server-side (`OrderPaymentController::settle`) before marking `paid` — the redirect alone is
+never trusted. Admin controls: **Settings** resource (`settings` table) → `payments_enabled` toggle +
+`default_payment_amount`; per-order override via `payment_amount` on the Filament order form (also
+`payment_status`/`paid_at` visible). Amount resolution: per-order value, else default, else no charge.
+Production TODO: add a Stripe webhook for settlement instead of relying only on the success redirect.
+
 **Per-order chat:** customer and owner message each other to agree on terms — `order_messages` table,
 thread page `account.orders.show` (`/account/orders/{id}`), composer open only while pending/confirmed
 (`Order::allowsMessages()`), read-only afterwards. Opening the thread marks the counterpart's messages

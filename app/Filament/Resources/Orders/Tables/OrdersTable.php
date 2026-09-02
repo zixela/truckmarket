@@ -29,6 +29,15 @@ class OrdersTable
                         OrderStatus::Completed => 'success',
                         OrderStatus::Declined, OrderStatus::Cancelled => 'gray',
                     }),
+                TextColumn::make('payment_amount')->money('usd', divideBy: false)->label('Charge'),
+                TextColumn::make('payment_status')
+                    ->badge()
+                    ->color(fn (?string $state) => match ($state) {
+                        'paid' => 'success',
+                        'pending' => 'warning',
+                        default => 'gray',
+                    })
+                    ->placeholder('—'),
                 TextColumn::make('confirmed_at')->dateTime()->toggleable(),
                 TextColumn::make('completed_at')->dateTime()->toggleable(),
                 TextColumn::make('created_at')->dateTime()->sortable(),

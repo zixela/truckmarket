@@ -10,7 +10,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-#[Fillable(['listing_id', 'customer_id', 'owner_id', 'status', 'message', 'response_note'])]
+#[Fillable([
+    'listing_id', 'customer_id', 'owner_id', 'status', 'message', 'response_note',
+    'payment_amount', 'payment_status', 'stripe_session_id',
+])]
 class Order extends Model
 {
     use HasFactory;
@@ -21,6 +24,8 @@ class Order extends Model
             'status' => OrderStatus::class,
             'confirmed_at' => 'datetime',
             'completed_at' => 'datetime',
+            'paid_at' => 'datetime',
+            'payment_amount' => 'decimal:2',
         ];
     }
 
@@ -58,6 +63,17 @@ class Order extends Model
     public function allowsMessages(): bool
     {
         return $this->status->isOpen();
+    }
+
+    /** Payment was requested (on confirm) and is still unpaid. */
+    public function awaitsPayment(): bool
+    {
+        return $this->payment_status === 'pending';
+    }
+
+    public function isPaid(): bool
+    {
+        return $this->payment_status === 'paid';
     }
 
     /** The counterpart of the given user on this order. */

@@ -110,6 +110,14 @@
                             <span class="ml-1 rounded-full bg-brand-500 px-1.5 text-white">{{ $order->unread_count }}</span>
                         @endif
                     </a>
+                    @if ($order->awaitsPayment())
+                        <a href="{{ route('account.orders.show', $order) }}"
+                           class="rounded-md bg-brand-500 px-3 py-1.5 text-xs font-medium text-white hover:bg-brand-600">
+                            💳 {{ __('orders.pay_now', ['amount' => number_format((float) $order->payment_amount, 2)]) }}
+                        </a>
+                    @elseif ($order->isPaid())
+                        <span class="rounded-md bg-green-100 px-3 py-1.5 text-xs font-medium text-green-800">✓ {{ __('orders.paid') }}</span>
+                    @endif
                     @if ($order->status === \App\Enums\OrderStatus::Pending)
                         <form method="POST" action="{{ route('account.orders.cancel', $order) }}">
                             @csrf

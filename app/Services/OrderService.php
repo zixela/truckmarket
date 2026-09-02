@@ -10,6 +10,7 @@ use App\Exceptions\OrderException;
 use App\Mail\OrderStatusMail;
 use App\Models\Listing;
 use App\Models\Order;
+use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 
@@ -62,10 +63,36 @@ class OrderService
     {
         $this->assertStatus($order, [OrderStatus::Pending]);
 
-        $order->update(['status' => OrderStatus::Confirmed, 'confirmed_at' => now()]);
+        $order->update([
+            'status' => OrderStatus::Confirmed,
+            'confirmed_at' => now(),
+        ] + $this->paymentRequest($order));
+
         $this->notify($order, OrderStatus::Confirmed, $order->customer);
 
         return $order;
+    }
+
+    /**
+     * When payments are enabled (admin setting) and an amount is resolvable
+     * (per-order amount set by admin, else the global default), request payment.
+     *
+     * @return array<string, mixed>
+     */
+    private function paymentRequest(Order $order): array
+    {
+        if (! Setting::bool('payments_enabled') || $order->isPaid()) {
+            return [];
+        }
+
+        $amount = $order->payment_amount
+            ?? (float) Setting::get('default_payment_amount', '0');
+
+        if ((float) $amount <= 0) {
+            return [];
+        }
+
+        return ['payment_amount' => $amount, 'payment_status' => 'pending'];
     }
 
     /** @throws OrderException */
