@@ -8,6 +8,7 @@ return [
         'company' => 'Компания',
         'dispatcher' => 'Диспетчер',
         'driver_owner' => 'Водитель и владелец',
+        'service' => 'Услуги',
     ],
     'statuses' => [
         'pending_moderation' => 'На модерации',
@@ -91,6 +92,7 @@ return [
         'languages' => 'Языки (несколько)',
         'cdl_class' => 'Класс CDL',
         'owns_truck' => 'Есть свой тягач',
+        'service_category' => 'Категория услуги',
     ],
     'sort' => [
         'newest' => 'Сначала новые',
@@ -110,6 +112,7 @@ return [
     'views' => 'Просмотры',
     'order_now' => 'Заказать услугу',
     'multi_language_hint' => 'Можно выбрать несколько языков.',
+    'no_service_categories' => 'Категорий услуг пока нет — их должен добавить администратор.',
     'seo' => [
         'type_description' => 'Объявления «:type» на TruckMarket — :count активных. Поиск по ZIP, радиусу и цене, связь с владельцами и заказ услуг.',
     ],

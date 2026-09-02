@@ -139,6 +139,9 @@ class ListingService
                 'cdl_class' => $data['cdl_class'] ?? null,
                 'owns_truck' => (bool) ($data['owns_truck'] ?? false),
             ],
+            ListingType::Service => [
+                'service_category_id' => $data['service_category_id'] ?? null,
+            ],
         };
 
         return $payload;

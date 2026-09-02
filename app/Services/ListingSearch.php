@@ -67,7 +67,15 @@ class ListingSearch
             ListingType::Company => $this->applyCompany($query, $filters),
             ListingType::Dispatcher => $this->applyDispatcher($query, $filters),
             ListingType::DriverOwner => $this->applyDriverOwner($query, $filters),
+            ListingType::Service => $this->applyService($query, $filters),
         };
+    }
+
+    private function applyService(Builder $query, array $filters): void
+    {
+        if ($categoryId = $filters['service_category_id'] ?? null) {
+            $query->whereHas('serviceDetail', fn (Builder $d) => $d->where('service_category_id', (int) $categoryId));
+        }
     }
 
     private function applyTruck(Builder $query, array $filters): void
@@ -235,6 +243,7 @@ class ListingSearch
             ListingType::Company => 'companyDetail',
             ListingType::Dispatcher => 'dispatcherDetail',
             ListingType::DriverOwner => 'driverOwnerDetail',
+            ListingType::Service => 'serviceDetail.category',
         };
     }
 }

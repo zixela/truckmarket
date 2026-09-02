@@ -53,7 +53,7 @@ class ListingResource extends Resource
     {
         $relations = [
             'truckDetail', 'trailerDetail', 'loadDetail',
-            'companyDetail', 'dispatcherDetail', 'driverOwnerDetail',
+            'companyDetail', 'dispatcherDetail', 'driverOwnerDetail', 'serviceDetail',
         ];
 
         $current = $listing->detailRelation();

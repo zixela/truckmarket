@@ -8,6 +8,7 @@ use App\Models\ListingDetails\CompanyDetail;
 use App\Models\ListingDetails\DispatcherDetail;
 use App\Models\ListingDetails\DriverOwnerDetail;
 use App\Models\ListingDetails\LoadDetail;
+use App\Models\ListingDetails\ServiceDetail;
 use App\Models\ListingDetails\TrailerDetail;
 use App\Models\ListingDetails\TruckDetail;
 
@@ -19,6 +20,7 @@ enum ListingType: string
     case Company = 'company';
     case Dispatcher = 'dispatcher';
     case DriverOwner = 'driver_owner';
+    case Service = 'service';
 
     public function label(): string
     {
@@ -34,6 +36,7 @@ enum ListingType: string
             self::Company => '🏢',
             self::Dispatcher => '👷',
             self::DriverOwner => '🧑',
+            self::Service => '🛠️',
         };
     }
 
@@ -47,6 +50,7 @@ enum ListingType: string
             self::Company => CompanyDetail::class,
             self::Dispatcher => DispatcherDetail::class,
             self::DriverOwner => DriverOwnerDetail::class,
+            self::Service => ServiceDetail::class,
         };
     }
 
@@ -66,6 +70,7 @@ enum ListingType: string
             self::Company => 'companies',
             self::Dispatcher => 'dispatchers',
             self::DriverOwner => 'drivers',
+            self::Service => 'services',
         };
     }
 

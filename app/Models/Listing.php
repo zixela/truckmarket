@@ -112,6 +112,11 @@ class Listing extends Model implements HasMedia
         return $this->hasOne(ListingDetails\DriverOwnerDetail::class);
     }
 
+    public function serviceDetail(): HasOne
+    {
+        return $this->hasOne(ListingDetails\ServiceDetail::class);
+    }
+
     /** The detail relation name matching this listing's type. */
     public function detailRelation(): string
     {
@@ -122,6 +127,7 @@ class Listing extends Model implements HasMedia
             ListingType::Company => 'companyDetail',
             ListingType::Dispatcher => 'dispatcherDetail',
             ListingType::DriverOwner => 'driverOwnerDetail',
+            ListingType::Service => 'serviceDetail',
         };
     }
 

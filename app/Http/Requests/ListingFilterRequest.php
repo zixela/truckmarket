@@ -40,6 +40,7 @@ class ListingFilterRequest extends FormRequest
             'languages' => ['nullable', 'array'],
             'languages.*' => [Rule::in(['english_a1', 'english_b2', 'english_c1', 'russian', 'georgian'])],
             'cdl_class' => ['nullable', Rule::in(['a', 'b'])],
+            'service_category_id' => ['nullable', 'integer', 'exists:service_categories,id'],
         ];
     }
 

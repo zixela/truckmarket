@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Listings\Schemas;
 use App\Enums\ListingStatus;
 use App\Enums\ListingType;
 use App\Models\Listing;
+use App\Models\ServiceCategory;
 use Closure;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\Select;
@@ -151,6 +152,17 @@ class ListingForm
                                 'b' => __('listings.cdl_classes.b'),
                             ]),
                         Toggle::make('owns_truck'),
+                    ]),
+
+                Fieldset::make(ListingType::Service->label())
+                    ->relationship('serviceDetail')
+                    ->visible(self::isType(ListingType::Service))
+                    ->schema([
+                        Select::make('service_category_id')
+                            ->label(__('listings.fields.service_category'))
+                            ->options(fn () => ServiceCategory::query()->ordered()->pluck('name_en', 'id'))
+                            ->required()
+                            ->searchable(),
                     ]),
             ]);
     }

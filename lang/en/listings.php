@@ -8,6 +8,7 @@ return [
         'company' => 'Company',
         'dispatcher' => 'Dispatcher',
         'driver_owner' => 'Driver & Owner',
+        'service' => 'Services',
     ],
     'statuses' => [
         'pending_moderation' => 'Pending moderation',
@@ -91,6 +92,7 @@ return [
         'languages' => 'Languages (multi)',
         'cdl_class' => 'CDL Class',
         'owns_truck' => 'Owns a truck',
+        'service_category' => 'Service category',
     ],
     'sort' => [
         'newest' => 'Newest first',
@@ -110,6 +112,7 @@ return [
     'views' => 'Views',
     'order_now' => 'Order this service',
     'multi_language_hint' => 'You can select several languages.',
+    'no_service_categories' => 'No service categories yet — an administrator has to add them first.',
     'seo' => [
         'type_description' => ':type listings on TruckMarket — :count active ads. Search by ZIP, radius and price, contact owners and order services.',
     ],

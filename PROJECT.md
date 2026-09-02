@@ -5,8 +5,13 @@
 
 ## 1. What this is
 
-A trucking marketplace (Laravel) where users post and order services across 6 listing types:
-**Load, Truck, Trailer, Company, Dispatcher, Driver & Owner**. Two locales (EN default, RU).
+A trucking marketplace (Laravel) where users post and order services across 7 listing types:
+**Load, Truck, Trailer, Company, Dispatcher, Driver & Owner, Service**. Two locales (EN default, RU).
+Service listings carry an admin-managed category (`service_categories` table: name_en/name_ru,
+is_active, sort_order — Filament "Service Categories" resource; the type is open to every user role;
+the detail table `listing_service_details` holds `service_category_id`, SEO slug `/services`).
+NOTE: adding any future listing type = new enum case + detail table/model + partials + a MySQL
+`ALTER ... MODIFY type ENUM(...)` migration (sqlite tests pick it up from the create migration).
 Free at this stage — no payments anywhere. Visual polish is intentionally rough; a separate
 pixel-matching pass against `D:\web\truck\html\` is planned but NOT done yet.
 

@@ -67,6 +67,12 @@ class ListingRequest extends FormRequest
                 'cdl_class' => ['nullable', Rule::in(['a', 'b'])],
                 'owns_truck' => ['nullable', 'boolean'],
             ],
+            ListingType::Service => [
+                'service_category_id' => [
+                    'required',
+                    Rule::exists('service_categories', 'id')->where('is_active', true),
+                ],
+            ],
             default => [],
         };
     }

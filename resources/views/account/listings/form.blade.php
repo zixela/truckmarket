@@ -204,6 +204,26 @@
         </div>
     </div>
 
+    {{-- SERVICE --}}
+    <div x-show="type === 'service'" x-cloak class="space-y-4">
+        @php $serviceCategories = \App\Models\ServiceCategory::query()->active()->ordered()->get(); @endphp
+        <label class="block text-sm">
+            <span class="mb-1 block font-medium">{{ __('listings.fields.service_category') }}</span>
+            <select name="service_category_id" class="w-full rounded-md border border-gray-300 px-3 py-2"
+                    :disabled="type !== 'service'" :required="type === 'service'">
+                <option value="">—</option>
+                @foreach ($serviceCategories as $category)
+                    <option value="{{ $category->id }}" @selected((string) $old('service_category_id', $detail?->service_category_id) === (string) $category->id)>
+                        {{ $category->name() }}
+                    </option>
+                @endforeach
+            </select>
+            @if ($serviceCategories->isEmpty())
+                <span class="mt-1 block text-xs text-red-500">{{ __('listings.no_service_categories') }}</span>
+            @endif
+        </label>
+    </div>
+
     {{-- Common: price / zip / description / photos --}}
     <div class="grid gap-4 sm:grid-cols-2">
         <label class="block text-sm">
