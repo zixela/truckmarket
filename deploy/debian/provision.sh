@@ -84,7 +84,9 @@ echo "deb [signed-by=/etc/apt/keyrings/sury-php.gpg] https://packages.sury.org/p
     > /etc/apt/sources.list.d/sury-php.list
 
 log "MySQL repository (repo.mysql.com, ${MYSQL_CHANNEL})"
-curl -fsSL https://repo.mysql.com/RPM-GPG-KEY-mysql-2023 | gpg --dearmor --yes -o /etc/apt/keyrings/mysql.gpg
+# RPM-GPG-KEY-mysql-2025 is the same signing key (A8D3785C) with its expiry extended to 2027;
+# the -2023 file still carries the old 2025-10-22 expiry, which Debian 13's sqv rejects.
+curl -fsSL https://repo.mysql.com/RPM-GPG-KEY-mysql-2025 | gpg --dearmor --yes -o /etc/apt/keyrings/mysql.gpg
 mysql_codename="$CODENAME"
 if ! curl -fsSI "https://repo.mysql.com/apt/debian/dists/${CODENAME}/Release" >/dev/null; then
     warn "repo.mysql.com has no ${CODENAME} packages yet, using the bookworm build"

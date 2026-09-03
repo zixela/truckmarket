@@ -94,8 +94,8 @@ curl -fsSL https://nginx.org/keys/nginx_signing.key | gpg --dearmor -o /etc/apt/
 echo "deb [signed-by=/etc/apt/keyrings/nginx.gpg] http://nginx.org/packages/debian $(. /etc/os-release; echo $VERSION_CODENAME) nginx" > /etc/apt/sources.list.d/nginx.list
 curl -fsSL https://packages.sury.org/php/apt.gpg -o /etc/apt/keyrings/sury-php.gpg
 echo "deb [signed-by=/etc/apt/keyrings/sury-php.gpg] https://packages.sury.org/php/ $(. /etc/os-release; echo $VERSION_CODENAME) main" > /etc/apt/sources.list.d/sury-php.list
-curl -fsSL https://repo.mysql.com/RPM-GPG-KEY-mysql-2023 | gpg --dearmor -o /etc/apt/keyrings/mysql.gpg
-echo "deb [signed-by=/etc/apt/keyrings/mysql.gpg] https://repo.mysql.com/apt/debian/ bookworm mysql-8.4-lts" > /etc/apt/sources.list.d/mysql.list
+curl -fsSL https://repo.mysql.com/RPM-GPG-KEY-mysql-2025 | gpg --dearmor -o /etc/apt/keyrings/mysql.gpg   # -2023 file is expired
+echo "deb [signed-by=/etc/apt/keyrings/mysql.gpg] https://repo.mysql.com/apt/debian/ $(. /etc/os-release; echo $VERSION_CODENAME) mysql-8.4-lts" > /etc/apt/sources.list.d/mysql.list
 curl -fsSL https://packages.redis.io/gpg | gpg --dearmor -o /etc/apt/keyrings/redis.gpg
 echo "deb [signed-by=/etc/apt/keyrings/redis.gpg] https://packages.redis.io/deb $(. /etc/os-release; echo $VERSION_CODENAME) main" > /etc/apt/sources.list.d/redis.list
 curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
