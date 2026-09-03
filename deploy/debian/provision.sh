@@ -58,6 +58,9 @@ run_app() { sudo -u "$APP_USER" -H env -C "$APP_DIR" "$@"; }
 
 # ------------------------------------------------------------------ base system
 log "Base packages"
+# The vendor lists are (re)written further down; drop stale copies so an old key or mirror
+# left by a previous run cannot block this first update.
+rm -f /etc/apt/sources.list.d/{nginx,sury-php,mysql,redis,nodesource}.list
 apt-get update
 apt-get -y full-upgrade
 apt-get -y install ca-certificates curl gnupg lsb-release sudo git unzip zip acl openssl cron logrotate \
