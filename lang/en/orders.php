@@ -40,6 +40,12 @@ return [
     'chat_placeholder' => 'Write a message...',
     'chat_send' => 'Send',
     'chat_closed' => 'Messaging is available while the order is pending or confirmed.',
+    'chat_sent' => 'Sent',
+    'chat_read' => 'Read',
+    'chat_like' => 'Like',
+    'chat_unlike' => 'Remove like',
+    'chat_liked' => 'Liked',
+    'chat_emoji' => 'Emoji',
 
     'paid' => 'Paid',
     'payment_pending' => 'Payment pending',

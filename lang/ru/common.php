@@ -9,6 +9,7 @@ return [
     'logout' => 'Выйти',
     'register' => 'Регистрация',
     'language' => 'Язык',
+    'theme_toggle' => 'Тёмная тема',
     'search' => 'Поиск',
     'clear' => 'Очистить',
     'clear_filter' => 'Очистить фильтр',

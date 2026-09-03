@@ -1,0 +1,14 @@
+# TruckMarket - MySQL 8.4 overrides (installed to /etc/mysql/mysql.conf.d/)
+[mysqld]
+bind-address = 127.0.0.1
+character-set-server = utf8mb4
+collation-server = utf8mb4_unicode_ci
+max_connections = 100
+
+# 25-50% of RAM on a shared 2 GB server; raise to 60-70% on a dedicated database host.
+innodb_buffer_pool_size = 512M
+innodb_flush_log_at_trx_commit = 1
+
+slow_query_log = 1
+slow_query_log_file = /var/log/mysql/slow.log
+long_query_time = 1

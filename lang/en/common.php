@@ -9,6 +9,7 @@ return [
     'logout' => 'Log out',
     'register' => 'Register',
     'language' => 'Language',
+    'theme_toggle' => 'Dark theme',
     'search' => 'Search',
     'clear' => 'Clear',
     'clear_filter' => 'Clear filter',

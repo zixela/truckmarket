@@ -1,0 +1,2 @@
+# TruckMarket - Laravel scheduler (template; provision.sh fills the __PLACEHOLDERS__)
+* * * * * __APP_USER__ cd __APP_DIR__ && /usr/bin/php artisan schedule:run >> /dev/null 2>&1

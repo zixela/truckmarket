@@ -6,7 +6,7 @@
 <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
     <div>
         <h1 class="text-xl font-bold">{{ __('account.title') }}</h1>
-        <p class="text-sm text-gray-500">{{ __('account.subtitle') }}</p>
+        <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('account.subtitle') }}</p>
     </div>
     <a href="{{ route('account.listings.create') }}"
        class="rounded-md bg-brand-500 px-4 py-2 text-sm font-medium text-white hover:bg-brand-600">

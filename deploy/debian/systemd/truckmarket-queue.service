@@ -1,0 +1,18 @@
+# TruckMarket - Redis queue worker (queued mails). Template; provision.sh fills the __PLACEHOLDERS__.
+[Unit]
+Description=TruckMarket queue worker
+After=network.target mysql.service redis-server.service valkey-server.service
+
+[Service]
+User=__APP_USER__
+Group=__APP_USER__
+WorkingDirectory=__APP_DIR__
+# --max-time makes the worker exit hourly so it always runs fresh code; systemd restarts it.
+ExecStart=/usr/bin/php artisan queue:work redis --sleep=3 --tries=3 --max-time=3600
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

@@ -10,38 +10,38 @@
     ];
 @endphp
 
-<div class="rounded-lg border border-gray-200 bg-white p-4 text-center">
+<div class="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-4 text-center">
     <form method="POST" action="{{ route('account.settings.avatar') }}" enctype="multipart/form-data" x-data>
         @csrf
         <button type="button" class="group relative mx-auto block" @click="$refs.avatarInput.click()">
             @if ($user->avatarUrl())
                 <img src="{{ $user->avatarUrl() }}" alt="{{ $user->name }}" class="mx-auto h-20 w-20 rounded-full object-cover">
             @else
-                <span class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-gray-100 text-3xl">👤</span>
+                <span class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-3xl">👤</span>
             @endif
         </button>
         <input type="file" name="avatar" accept="image/*" class="hidden" x-ref="avatarInput" @change="$el.form.submit()">
     </form>
-    <p class="mt-1 text-xs text-gray-400">{{ __('account.avatar_hint') }}</p>
+    <p class="mt-1 text-xs text-gray-400 dark:text-gray-500">{{ __('account.avatar_hint') }}</p>
 
     <div class="mt-2 font-semibold">{{ $user->name }}</div>
-    <div class="text-xs text-gray-500">{{ $user->role()?->label() }}</div>
+    <div class="text-xs text-gray-500 dark:text-gray-400">{{ $user->role()?->label() }}</div>
 
     <a href="{{ route('account.reviews.index') }}" class="mt-2 block">
         <x-stars :score="$summary['average']" />
-        <span class="text-sm text-gray-600">{{ $summary['average'] }} ({{ $summary['count'] }} {{ __('account.reviews') }})</span>
+        <span class="text-sm text-gray-600 dark:text-gray-400">{{ $summary['average'] }} ({{ $summary['count'] }} {{ __('account.reviews') }})</span>
     </a>
 </div>
 
-<nav class="rounded-lg border border-gray-200 bg-white p-2">
-    <div class="px-3 py-2 text-xs font-semibold uppercase text-gray-400">{{ __('account.menu') }}</div>
+<nav class="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-2">
+    <div class="px-3 py-2 text-xs font-semibold uppercase text-gray-400 dark:text-gray-500">{{ __('account.menu') }}</div>
     @foreach ($menu as $item)
         <a href="{{ route($item['route']) }}"
-           class="flex items-center gap-3 rounded-md px-3 py-2 {{ request()->routeIs(str_replace('.index', '.*', $item['route'])) || request()->routeIs($item['route']) ? 'bg-brand-50 text-brand-700' : 'hover:bg-gray-50' }}">
+           class="flex items-center gap-3 rounded-md px-3 py-2 {{ request()->routeIs(str_replace('.index', '.*', $item['route'])) || request()->routeIs($item['route']) ? 'bg-brand-50 dark:bg-brand-500/10 text-brand-700 dark:text-brand-400' : 'hover:bg-gray-50 dark:hover:bg-gray-800' }}">
             <span>{{ $item['icon'] }}</span>
             <span>
                 <span class="block text-sm font-medium">{{ $item['title'] }}</span>
-                <span class="block text-xs text-gray-500">{{ $item['sub'] }}</span>
+                <span class="block text-xs text-gray-500 dark:text-gray-400">{{ $item['sub'] }}</span>
             </span>
         </a>
     @endforeach

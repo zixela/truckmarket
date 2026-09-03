@@ -47,6 +47,17 @@ spatie/laravel-permission (roles), spatie/laravel-medialibrary (photos/avatars),
   and **calls `$request->route()->forgetParameter('locale')`** — critical: without it the locale string
   is injected positionally into controller signatures and breaks route-model binding.
 - All strings in `lang/en/*.php` + `lang/ru/*.php`: `common`, `auth`, `roles`, `listings`, `orders`, `account`.
+  The framework groups `validation`, `passwords`, `pagination` are published in `lang/en` only (RU falls back
+  to EN until translated in the admin).
+- **Admin-editable texts:** the `translations` table (`group`, `key`, `en`, `ru`, `en_default`, `ru_default`)
+  mirrors those files. `App\Providers\TranslationServiceProvider` (listed last in `bootstrap/providers.php`,
+  so it wins the deferred `translator` binding) installs `App\Services\Translation\DatabaseLoader`, which
+  layers non-empty DB values over the file lines per locale+group (Redis `translations:{locale}`, TTL 1h,
+  flushed on any `Translation` save/delete/sync). Empty DB value → file text → EN fallback. Package
+  namespaces (`filament::…`) and JSON strings are untouched; missing table → plain file behaviour.
+- **After adding/changing keys in `lang/*.php`** run `php artisan translations:sync` (or admin → Translations
+  → "Sync from files"). `App\Services\Translation\TranslationSync` inserts new keys, refreshes `*_default`,
+  and updates a value only if the admin never customized it. Without a sync the existing DB row keeps winning.
 - Locale switcher component: `resources/views/components/locale-switcher.blade.php` (swaps first URL segment).
 - Users carry a `locale` column; queued mails use `->locale($user->locale)`.
 
@@ -159,6 +170,10 @@ thread page `account.orders.show` (`/account/orders/{id}`), composer open only w
 (`Order::allowsMessages()`), read-only afterwards. Opening the thread marks the counterpart's messages
 read; orders index shows unread badges; recipient gets a queued `OrderMessageMail` only for the first
 unread message (no flooding). Access via `OrderPolicy::view` (parties only).
+Own messages show a read status (`✓ Sent` / `✓✓ Read` from `read_at`). The recipient can like a message
+(`order_messages.liked_at`, `POST orders.messages.like` with scoped bindings — counterpart only, open orders
+only); the sender sees ❤️ next to the bubble. The composer has a quick-emoji row (8 emojis listed in the view,
+Alpine inserts at the caret).
 
 ## 8. Routes (all inside `/{locale}` group, names unprefixed)
 
@@ -193,6 +208,17 @@ Listing create/edit form (`account/listings/form.blade.php`): Alpine `x-data typ
 field groups; hidden groups' inputs are `:disabled` so they don't submit. Type is locked when editing.
 Brand color: Tailwind theme vars `--color-brand-*` (orange) in `resources/css/app.css`.
 
+**Dark mode (class strategy):** `@custom-variant dark (&:where(.dark, .dark *))` in `app.css`. An inline
+script in the `<head>` of `layouts/app.blade.php` puts `.dark` on `<html>` before first paint from
+`localStorage.theme` (falls back to `prefers-color-scheme`); `<x-theme-toggle />` in the header flips it via
+the Alpine store `theme` (`resources/js/app.js`). `.dark { color-scheme: dark }` darkens native inputs/selects.
+Every public view carries explicit `dark:` twins next to light color utilities — keep the convention for new
+markup: `bg-white → dark:bg-gray-900`, `bg-gray-50/100 → dark:bg-gray-800` (body: `dark:bg-gray-950`),
+`text-gray-900/700/500/400 → dark:text-gray-100/300/400/500`, `border-gray-300/200 → dark:border-gray-600/700`,
+`text-brand-600/700 → dark:text-brand-400`, tints `bg-brand-50 → dark:bg-brand-500/10`, badges
+`bg-X-100 text-X-800 → dark:bg-X-900/50 dark:text-X-200`. Solid brand/red/green buttons with `text-white`
+stay unchanged. Mail views and the Filament admin (own dark mode) are not affected.
+
 ## 10. Admin (Filament 5, `/admin`)
 
 Access: `User::canAccessPanel()` → only role `admin` and not blocked.
@@ -206,6 +232,10 @@ Resources in `app/Filament/Resources/`:
   (deletes detail rows of other types) and flush `ListingCache`.
 - **Orders** — status badges/filter, force edit.
 - **Reviews** — hide/show action (invalidates rating cache), delete.
+- **Translations** — every `lang/*.php` string: group badge, key, EN/RU, "Edited" marker; search, group
+  filter, "Missing Russian" / "Edited in admin" toggles; slide-over edit (EN required, RU optional; placeholders
+  such as `:email` from the EN default must be kept — `App\Rules\KeepsPlaceholders`); per-row "Reset" to the
+  file defaults; header action "Sync from files". No create/delete: keys come from the language files.
 - Dashboard: `App\Filament\Widgets\StatsOverview` (users, active/pending listings, orders, reviews).
 
 ## 11. Caching summary (Redis)
@@ -217,10 +247,11 @@ Resources in `app/Filament/Resources/`:
 | `user:{id}:rating` | aggregate rating | on new review / hide toggle |
 | `zip:{zip}` | ZIP coordinates | TTL 24h |
 | `listing:{id}:view:{who}` | view-count dedupe | TTL 1h |
+| `translations:{locale}` | admin-edited site texts (group → key → text) | `Translation::flushCache()` on save/delete/sync, TTL 1h |
 
 Sessions and queues also live in Redis (`SESSION_DRIVER=redis`, `QUEUE_CONNECTION=redis`).
 
-## 12. Tests (Pest, 24 tests — all passing)
+## 12. Tests (Pest, 73 tests — all passing)
 
 `php artisan test` — sqlite in-memory (that's why `ListingCache::preview` sorts in PHP, not MySQL `FIELD()`).
 - `RegistrationTest` — register+code mail, verify ok/expired, resend invalidates old, account gate.
@@ -229,6 +260,8 @@ Sessions and queues also live in Redis (`SESSION_DRIVER=redis`, `QUEUE_CONNECTIO
 - `PublicPagesTest` — home en/ru, marketplace type filter, inactive hidden, root redirect, profile.
 - `AdminListingTypeChangeTest` — Filament: type switch swaps fieldsets + prunes stale detail row;
   photo upload from admin persists to media collection.
+- `TranslationManagementTest` — DB loader installed, migration imports the files, DB value wins, empty RU
+  falls back to the file, sync keeps admin edits but follows file changes, Filament edit + placeholder guard.
 
 Formatting: `./vendor/bin/pint`.
 
@@ -274,11 +307,17 @@ Formatting: `./vendor/bin/pint`.
     form silently does nothing (no JS). Guests are redirected via `redirectGuestsTo` in
     `bootstrap/app.php` because bare `route('login')` lacks the `{locale}` parameter on
     Filament/Livewire routes.
+11. **Site texts come from the `translations` table, not only from `lang/*.php`.** Editing a language file
+    changes nothing on the site until `php artisan translations:sync` runs (and even then only for keys the
+    admin never customized — see §4). New Filament resources need `php artisan filament:optimize` again,
+    because `bootstrap/cache/filament/panels/admin.php` caches component discovery.
 
 ## 14. Not done yet / next steps
 
 - **Visual pixel-match pass** against `D:\web\truck\html\` (user explicitly deferred this).
 - Real Google OAuth keys in `.env` (+ Google Cloud console redirect `http://localhost:8000/en/auth/google/callback`).
 - Full US ZIP dataset import into `zip_codes` (currently ~40 cities).
-- Production hardening if deployed: `APP_ENV=production`, `APP_DEBUG=false`, real APP_URL, mail provider,
-  `php artisan optimize`, web server vhost pointing to `public/` (standard Laravel `.htaccess` already there).
+- Production deployment: `deploy/debian/` — `provision.sh` sets up a Debian 12/13 server (nginx.org stable,
+  MySQL 8.4 LTS, PHP 8.4-FPM from deb.sury.org, Redis, Node 24, Composer, systemd queue worker, cron, ufw,
+  certbot) and deploys the app; `deploy.sh` releases updates. See `deploy/debian/README.md`.
+  Still manual after provisioning: real mail credentials + optional API keys in `.env`.

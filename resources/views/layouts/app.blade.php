@@ -6,32 +6,41 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', __('common.app_name')) — {{ __('common.app_name') }}</title>
     @yield('head')
+    {{-- Apply the saved theme before the stylesheet loads so the page never flashes white. --}}
+    <script>
+        (function () {
+            var theme = localStorage.getItem('theme');
+            var dark = theme ? theme === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+            document.documentElement.classList.toggle('dark', dark);
+        })();
+    </script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="min-h-screen bg-gray-50 text-gray-900 antialiased">
+<body class="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 antialiased">
 
-<header class="border-b border-gray-200 bg-white">
+<header class="border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
     <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-3">
-        <a href="{{ route('home') }}" class="text-lg font-bold text-brand-600">{{ __('common.app_name') }}</a>
+        <a href="{{ route('home') }}" class="text-lg font-bold text-brand-600 dark:text-brand-400">{{ __('common.app_name') }}</a>
 
         <nav class="flex flex-wrap items-center gap-2 text-sm">
-            <a href="{{ route('listings.type', ['typeSlug' => \App\Enums\ListingType::Truck->slug()]) }}" class="rounded-md px-3 py-2 hover:bg-gray-100">{{ __('common.marketplace') }}</a>
+            <a href="{{ route('listings.type', ['typeSlug' => \App\Enums\ListingType::Truck->slug()]) }}" class="rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">{{ __('common.marketplace') }}</a>
 
             @auth
                 <x-notification-bell />
-                <a href="{{ route('account.listings.index') }}" class="rounded-md px-3 py-2 hover:bg-gray-100">{{ __('common.my_account') }}</a>
+                <a href="{{ route('account.listings.index') }}" class="rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">{{ __('common.my_account') }}</a>
                 @if (auth()->user()->isAdmin())
-                    <a href="{{ url('/admin') }}" class="rounded-md px-3 py-2 hover:bg-gray-100">{{ __('common.admin_panel') }}</a>
+                    <a href="{{ url('/admin') }}" class="rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">{{ __('common.admin_panel') }}</a>
                 @endif
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="submit" class="rounded-md px-3 py-2 hover:bg-gray-100">{{ __('common.logout') }}</button>
+                    <button type="submit" class="rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">{{ __('common.logout') }}</button>
                 </form>
             @else
-                <a href="{{ route('login') }}" class="rounded-md px-3 py-2 hover:bg-gray-100">{{ __('common.login') }}</a>
+                <a href="{{ route('login') }}" class="rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">{{ __('common.login') }}</a>
                 <a href="{{ route('register') }}" class="rounded-md bg-brand-500 px-3 py-2 font-medium text-white hover:bg-brand-600">{{ __('common.register') }}</a>
             @endauth
 
+            <x-theme-toggle />
             <x-locale-switcher />
         </nav>
     </div>
@@ -42,7 +51,7 @@
     @yield('content')
 </main>
 
-<footer class="mt-10 border-t border-gray-200 bg-white py-6 text-center text-sm text-gray-500">
+<footer class="mt-10 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 py-6 text-center text-sm text-gray-500 dark:text-gray-400">
     &copy; {{ date('Y') }} {{ __('common.app_name') }}
 </footer>
 

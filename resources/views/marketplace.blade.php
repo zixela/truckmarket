@@ -10,10 +10,10 @@
 @section('content')
 <div class="grid gap-4 lg:grid-cols-[280px_1fr]">
 
-    <aside class="space-y-4 rounded-lg border border-gray-200 bg-white p-4">
+    <aside class="space-y-4 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-4">
         <div class="flex items-center justify-between">
             <span class="font-semibold">{{ __('common.filter') }}</span>
-            <a href="{{ route('listings.type', ['typeSlug' => $activeType->slug()]) }}" class="text-xs text-brand-600 hover:underline">
+            <a href="{{ route('listings.type', ['typeSlug' => $activeType->slug()]) }}" class="text-xs text-brand-600 dark:text-brand-400 hover:underline">
                 {{ __('common.clear') }}
             </a>
         </div>
@@ -22,15 +22,15 @@
             @foreach ($types as $t)
                 <li>
                     <a href="{{ route('listings.type', ['typeSlug' => $t->slug()]) }}"
-                       class="flex items-center justify-between rounded-md px-3 py-2 text-sm {{ $activeType === $t ? 'bg-brand-50 font-medium text-brand-700' : 'hover:bg-gray-50' }}">
+                       class="flex items-center justify-between rounded-md px-3 py-2 text-sm {{ $activeType === $t ? 'bg-brand-50 dark:bg-brand-500/10 font-medium text-brand-700 dark:text-brand-400' : 'hover:bg-gray-50 dark:hover:bg-gray-800' }}">
                         <span>{{ $t->icon() }} {{ $t->label() }}</span>
-                        <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-600">{{ $counts[$t->value] }}</span>
+                        <span class="rounded-full bg-gray-100 dark:bg-gray-800 px-2 py-0.5 text-xs text-gray-600 dark:text-gray-400">{{ $counts[$t->value] }}</span>
                     </a>
                 </li>
             @endforeach
         </ul>
 
-        <form method="GET" action="{{ route('listings.type', ['typeSlug' => $activeType->slug()]) }}" class="@container space-y-4 border-t border-gray-100 pt-4">
+        <form method="GET" action="{{ route('listings.type', ['typeSlug' => $activeType->slug()]) }}" class="@container space-y-4 border-t border-gray-100 dark:border-gray-800 pt-4">
             <input type="hidden" name="sort" value="{{ $filters['sort'] ?? 'newest' }}">
             @include('partials.filters.'.$activeType->value, ['filters' => $filters])
 
@@ -41,7 +41,7 @@
     </aside>
 
     <section class="space-y-4">
-        <div class="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-gray-200 bg-white px-4 py-3">
+        <div class="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-3">
             <span class="text-sm font-medium">{{ __('common.total') }}: {{ $listings->total() }}</span>
 
             <form method="GET" action="{{ route('listings.type', ['typeSlug' => $activeType->slug()]) }}" class="flex items-center gap-2 text-sm">
@@ -57,7 +57,7 @@
                     @endif
                 @endforeach
                 <label for="sort">{{ __('common.sort') }}</label>
-                <select id="sort" name="sort" onchange="this.form.submit()" class="rounded-md border border-gray-300 px-3 py-1.5">
+                <select id="sort" name="sort" onchange="this.form.submit()" class="rounded-md border border-gray-300 dark:border-gray-600 px-3 py-1.5">
                     @foreach (['newest', 'oldest', 'price_asc', 'price_desc'] as $sort)
                         <option value="{{ $sort }}" @selected(($filters['sort'] ?? 'newest') === $sort)>{{ __('listings.sort.'.$sort) }}</option>
                     @endforeach
@@ -66,7 +66,7 @@
         </div>
 
         @if ($listings->isEmpty())
-            <div class="rounded-lg border border-dashed border-gray-300 bg-white p-10 text-center text-gray-500">
+            <div class="rounded-lg border border-dashed border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 p-10 text-center text-gray-500 dark:text-gray-400">
                 {{ __('common.nothing_found') }}
             </div>
         @else

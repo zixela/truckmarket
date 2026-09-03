@@ -4,8 +4,29 @@
 @source '../../storage/framework/views/*.php';
 @source '../views/**/*.blade.php';
 
+/* Dark mode follows the .dark class on <html> (set by the inline script in layouts/app.blade.php). */
+@custom-variant dark (&:where(.dark, .dark *));
+
 [x-cloak] {
     display: none !important;
+}
+
+@layer base {
+    :root {
+        color-scheme: light;
+    }
+
+    .dark {
+        color-scheme: dark;
+    }
+
+    /* Native dropdown lists ignore color-scheme when the control is transparent (Firefox, some Chromium builds),
+       so give selects and their options an explicit dark surface. */
+    .dark select,
+    .dark option {
+        background-color: var(--color-gray-900);
+        color: var(--color-gray-100);
+    }
 }
 
 @theme {

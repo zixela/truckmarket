@@ -17,9 +17,9 @@
 <div class="grid gap-6 lg:grid-cols-[2fr_1fr]">
 
     <div class="space-y-4">
-        <div class="rounded-lg border border-gray-200 bg-white p-4">
-            <div class="mb-2 flex flex-wrap items-center gap-2 text-sm text-gray-500">
-                <span class="rounded-full bg-gray-100 px-3 py-1">{{ $listing->type->icon() }} {{ $listing->type->label() }}</span>
+        <div class="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-4">
+            <div class="mb-2 flex flex-wrap items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+                <span class="rounded-full bg-gray-100 dark:bg-gray-800 px-3 py-1">{{ $listing->type->icon() }} {{ $listing->type->label() }}</span>
                 @if ($listing->zip)<span>{{ $listing->zip }}</span>@endif
                 <span>{{ __('listings.views') }}: {{ $listing->views }}</span>
             </div>
@@ -27,7 +27,7 @@
             <h1 class="text-2xl font-bold">{{ $listing->title }}</h1>
 
             @if ($listing->price)
-                <div class="mt-2 text-2xl font-bold text-brand-600">${{ number_format($listing->price) }}</div>
+                <div class="mt-2 text-2xl font-bold text-brand-600 dark:text-brand-400">${{ number_format($listing->price) }}</div>
             @endif
 
             @php
@@ -98,12 +98,12 @@
             @endif
 
             @if ($listing->description)
-                <p class="mt-4 whitespace-pre-line text-gray-700">{{ $listing->description }}</p>
+                <p class="mt-4 whitespace-pre-line text-gray-700 dark:text-gray-300">{{ $listing->description }}</p>
             @endif
         </div>
 
         @if ($detail)
-            <div class="rounded-lg border border-gray-200 bg-white p-4">
+            <div class="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-4">
                 <h2 class="mb-3 font-semibold">{{ $listing->type->label() }}</h2>
                 <dl class="grid gap-x-6 gap-y-2 text-sm sm:grid-cols-2">
                     @include('partials.details.'.$listing->type->value, ['detail' => $detail])
@@ -113,27 +113,27 @@
     </div>
 
     <aside class="space-y-4">
-        <div class="rounded-lg border border-gray-200 bg-white p-4">
-            <div class="text-xs uppercase text-gray-500">{{ __('listings.posted_by') }}</div>
-            <a href="{{ route('profile.show', $listing->user) }}" class="mt-1 block font-semibold text-brand-600 hover:underline">
+        <div class="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-4">
+            <div class="text-xs uppercase text-gray-500 dark:text-gray-400">{{ __('listings.posted_by') }}</div>
+            <a href="{{ route('profile.show', $listing->user) }}" class="mt-1 block font-semibold text-brand-600 dark:text-brand-400 hover:underline">
                 {{ $listing->user->name }}
             </a>
-            <div class="mt-1 text-sm text-gray-600">
+            <div class="mt-1 text-sm text-gray-600 dark:text-gray-400">
                 <x-stars :score="$rating['average']" /> {{ $rating['average'] }} ({{ $rating['count'] }} {{ __('account.reviews') }})
             </div>
-            <div class="mt-2 text-xs text-gray-500">
+            <div class="mt-2 text-xs text-gray-500 dark:text-gray-400">
                 {{ __('listings.published') }}: {{ $listing->created_at->format('M d, Y') }}
             </div>
         </div>
 
         @auth
             @if ($canOrder)
-                <form method="POST" action="{{ route('account.orders.store', $listing) }}" class="space-y-3 rounded-lg border border-gray-200 bg-white p-4">
+                <form method="POST" action="{{ route('account.orders.store', $listing) }}" class="space-y-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-4">
                     @csrf
                     <label class="block text-sm">
                         <span class="mb-1 block font-medium">{{ __('orders.message') }}</span>
                         <textarea name="message" rows="3" placeholder="{{ __('orders.message_placeholder') }}"
-                                  class="w-full rounded-md border border-gray-300 px-3 py-2"></textarea>
+                                  class="w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2"></textarea>
                     </label>
                     <button type="submit" class="w-full rounded-md bg-brand-500 px-4 py-2 font-medium text-white hover:bg-brand-600">
                         {{ __('orders.place_order') }}
