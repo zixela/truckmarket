@@ -245,10 +245,10 @@ set_env REDIS_PASSWORD "$REDIS_PASSWORD"
 set_env MAIL_FROM_ADDRESS "\"noreply@${DOMAIN:-truckmarket.test}\""
 chown "$APP_USER:$APP_USER" "$ENV_FILE"
 chmod 640 "$ENV_FILE"
-grep -qE '^APP_KEY=.+' "$ENV_FILE" || run_app php artisan key:generate --force
 
 log "Composer and npm dependencies, asset build"
 run_app composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
+grep -qE '^APP_KEY=.+' "$ENV_FILE" || run_app php artisan key:generate --force   # artisan needs vendor/
 run_app npm ci --no-audit --no-fund
 run_app npm run build
 
