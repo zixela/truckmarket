@@ -56,3 +56,7 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+apt-get update && apt-get -y install git
+git clone https://github.com/zixela/truckmarket.git /tmp/truckmarket-src
+cd /tmp/truckmarket-src/deploy/debian
+DOMAIN=usatruckers.com LE_EMAIL=admin@example.com bash provision.sh

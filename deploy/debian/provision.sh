@@ -155,6 +155,19 @@ rm -f /etc/nginx/conf.d/default.conf
 sed -e "s|__SERVER_NAME__|${DOMAIN:-_}|g" -e "s|__APP_DIR__|${APP_DIR}|g" -e "s|__PHP_VERSION__|${PHP_VERSION}|g" \
     "$SCRIPT_DIR/nginx/truckmarket.conf" > /etc/nginx/conf.d/truckmarket.conf
 
+# Behind the Cloudflare proxy the app must see the visitor's IP (login throttling, view counter),
+# not Cloudflare's. Only requests from Cloudflare's published ranges are rewritten, so this is
+# harmless when the site is not proxied.
+if cf_ranges="$(curl -fsSL https://www.cloudflare.com/ips-v4 https://www.cloudflare.com/ips-v6)"; then
+    {
+        echo "# Cloudflare edge ranges (fetched $(date -u +%F)); refresh by re-running provision.sh"
+        for range in $cf_ranges; do echo "set_real_ip_from ${range};"; done
+        echo "real_ip_header CF-Connecting-IP;"
+    } > /etc/nginx/conf.d/00-cloudflare-real-ip.conf
+else
+    warn "could not fetch Cloudflare IP ranges; visitor IPs will be Cloudflare's if the site is proxied"
+fi
+
 # ------------------------------------------------------------------ MySQL
 log "MySQL configuration, database ${DB_NAME} and user ${DB_USER}"
 install -m 0644 "$SCRIPT_DIR/mysql/zz-truckmarket.cnf" /etc/mysql/mysql.conf.d/zz-truckmarket.cnf

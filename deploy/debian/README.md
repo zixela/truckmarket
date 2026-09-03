@@ -26,6 +26,15 @@ DOMAIN=truckmarket.example.com LE_EMAIL=admin@example.com bash provision.sh
 
 Point the domain's DNS `A` record at the server first; with `DOMAIN` + `LE_EMAIL` the script also issues the
 Let's Encrypt certificate and forces HTTPS. Without them the site is served over HTTP on the server IP.
+`LE_EMAIL` must be a real mailbox (Let's Encrypt rejects `example.com` addresses).
+
+**Domain behind Cloudflare (orange-cloud proxy):**
+
+1. In Cloudflare DNS set the `A` record (and `www` if used) to the new server's IP; the proxy may stay on.
+2. During provisioning set SSL/TLS mode to **Full** and keep **Always Use HTTPS** off, so the HTTP-01
+   challenge reaches nginx. After the run switch to **Full (strict)** and turn Always Use HTTPS on.
+3. Visitor IPs: the script writes `/etc/nginx/conf.d/00-cloudflare-real-ip.conf` (Cloudflare ranges +
+   `CF-Connecting-IP`), so PHP sees the real client address. Re-run `provision.sh` occasionally to refresh the ranges.
 
 Private repository: create a deploy key for the app user and use the SSH URL.
 
