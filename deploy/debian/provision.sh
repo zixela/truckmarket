@@ -244,6 +244,7 @@ set_env DB_PASSWORD "$DB_PASSWORD"
 set_env REDIS_CLIENT phpredis
 set_env REDIS_PASSWORD "$REDIS_PASSWORD"
 set_env MAIL_FROM_ADDRESS "\"noreply@${DOMAIN:-truckmarket.test}\""
+set_env MAIL_FROM_NAME "\"${DOMAIN:-truckmarket.test}\""   # mails are branded with the site address
 chown "$APP_USER:$APP_USER" "$ENV_FILE"
 chmod 640 "$ENV_FILE"
 

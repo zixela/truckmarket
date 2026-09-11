@@ -33,7 +33,10 @@ class PhoneVerificationService
             'expires_at' => now()->addMinutes(self::TTL_MINUTES),
         ]);
 
-        $this->sms->send($user->company_phone, __('auth.sms_code_text', ['code' => $code]));
+        $this->sms->send($user->company_phone, __('auth.sms_code_text', [
+            'code' => $code,
+            'site' => config('app.site_host'),
+        ]));
     }
 
     public function verify(User $user, string $code): bool

@@ -60,6 +60,10 @@ spatie/laravel-permission (roles), spatie/laravel-medialibrary (photos/avatars),
   and updates a value only if the admin never customized it. Without a sync the existing DB row keeps winning.
 - Locale switcher component: `resources/views/components/locale-switcher.blade.php` (swaps first URL segment).
 - Users carry a `locale` column; queued mails use `->locale($user->locale)`.
+- **Outgoing mail/SMS are branded with the site address, not the app name:** `config('app.site_host')`
+  (host of `APP_URL`) feeds the published mail layout `resources/views/vendor/mail/{html,text}/message.blade.php`,
+  the mail views and the `:site` placeholder in `auth.code_mail_subject` / `auth.sms_code_text`.
+  `MAIL_FROM_NAME` should be the domain too (provision.sh sets it).
 
 ## 5. Roles & authentication
 

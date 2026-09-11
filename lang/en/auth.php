@@ -33,7 +33,7 @@ return [
     'verify_required' => 'Please confirm your email to continue.',
     'verify_throttle' => 'Please wait before requesting another code.',
 
-    'code_mail_subject' => 'Your TruckMarket verification code',
+    'code_mail_subject' => 'Your :site verification code',
     'code_mail_line' => 'Use this code to confirm your email address:',
     'code_mail_expires' => 'The code expires in :minutes minutes.',
     'code_mail_ignore' => 'If you did not create an account, you can ignore this email.',
@@ -50,7 +50,7 @@ return [
     'phone_verified' => 'Your phone number has been confirmed.',
     'sms_resend' => 'Send a new SMS code',
     'sms_sent' => 'A new code has been sent by SMS.',
-    'sms_code_text' => 'TruckMarket verification code: :code',
+    'sms_code_text' => ':site verification code: :code',
 
     'choose_role_title' => 'Choose your account type',
     'choose_role_intro' => 'Tell us who you are so we can set up your profile.',

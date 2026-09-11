@@ -1,5 +1,5 @@
 <x-mail::message>
-# {{ config('app.name') }}
+# {{ config('app.site_host') }}
 
 {{ $line }}
 
@@ -7,5 +7,5 @@
 {{ __('orders.mail.view_order') }}
 </x-mail::button>
 
-{{ config('app.name') }}
+{{ config('app.site_host') }}
 </x-mail::message>

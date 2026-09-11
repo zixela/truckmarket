@@ -33,7 +33,7 @@ return [
     'verify_required' => 'Подтвердите email, чтобы продолжить.',
     'verify_throttle' => 'Подождите перед запросом нового кода.',
 
-    'code_mail_subject' => 'Ваш код подтверждения TruckMarket',
+    'code_mail_subject' => 'Ваш код подтверждения :site',
     'code_mail_line' => 'Используйте этот код для подтверждения email:',
     'code_mail_expires' => 'Код действителен :minutes минут.',
     'code_mail_ignore' => 'Если вы не регистрировались, просто игнорируйте это письмо.',
@@ -50,7 +50,7 @@ return [
     'phone_verified' => 'Номер телефона подтверждён.',
     'sms_resend' => 'Отправить новый SMS-код',
     'sms_sent' => 'Новый код отправлен по SMS.',
-    'sms_code_text' => 'Код подтверждения TruckMarket: :code',
+    'sms_code_text' => 'Код подтверждения :site: :code',
 
     'choose_role_title' => 'Выберите тип аккаунта',
     'choose_role_intro' => 'Укажите, кто вы, чтобы мы настроили ваш профиль.',

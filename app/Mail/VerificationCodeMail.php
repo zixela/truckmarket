@@ -19,7 +19,7 @@ class VerificationCodeMail extends Mailable
 
     public function envelope(): Envelope
     {
-        return new Envelope(subject: __('auth.code_mail_subject'));
+        return new Envelope(subject: __('auth.code_mail_subject', ['site' => config('app.site_host')]));
     }
 
     public function content(): Content

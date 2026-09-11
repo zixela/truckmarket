@@ -54,6 +54,9 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
+    // Host part of APP_URL (e.g. usatruckers.com). Outgoing mail and SMS show it instead of the brand name.
+    'site_host' => parse_url(env('APP_URL', 'http://localhost'), PHP_URL_HOST) ?: 'localhost',
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

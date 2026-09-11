@@ -11,5 +11,5 @@
 
 {{ __('auth.code_mail_ignore') }}
 
-{{ config('app.name') }}
+{{ config('app.site_host') }}
 </x-mail::message>
