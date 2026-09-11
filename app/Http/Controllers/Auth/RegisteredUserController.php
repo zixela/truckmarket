@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Services\CompanyVerification\CompanyVerifier;
 use App\Services\EmailVerificationService;
+use App\Support\CompanyFields;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,9 +34,7 @@ class RegisteredUserController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'confirmed', Password::defaults()],
             'role' => ['required', Rule::in(array_column(UserRole::registerable(), 'value'))],
-            'company_name' => ['required_if:role,'.UserRole::Company->value, 'nullable', 'string', 'max:150'],
-            'company_number' => ['required_if:role,'.UserRole::Company->value, 'nullable', 'string', 'max:32', 'regex:/^[0-9\- ]+$/'],
-            'company_phone' => ['required_if:role,'.UserRole::Company->value, 'nullable', 'string', 'max:40', 'regex:/^\+?[0-9\-\s()]{7,}$/'],
+            ...CompanyFields::rules(),
         ]);
 
         $isCompany = $data['role'] === UserRole::Company->value;
@@ -60,9 +59,7 @@ class RegisteredUserController extends Controller
             'email' => $data['email'],
             'password' => $data['password'],
             'locale' => app()->getLocale(),
-            'company_name' => $isCompany ? $data['company_name'] : null,
-            'company_number' => $isCompany ? preg_replace('/\D/', '', $data['company_number']) : null,
-            'company_phone' => $isCompany ? preg_replace('/[^0-9+]/', '', $data['company_phone']) : null,
+            ...CompanyFields::attributes($data),
         ]);
 
         if ($companyVerifiedAt) {

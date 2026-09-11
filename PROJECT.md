@@ -99,7 +99,9 @@ Roles via spatie/permission (enum `App\Enums\UserRole`): `company`, `dispatcher`
 ### Google OAuth
 - Routes: `/auth/google` → redirect, `/auth/google/callback` (`GoogleAuthController`).
 - Existing email → links `google_id`; new user → created verified with `needs_role_selection=true`
-  and must pick a role at `/choose-role` before entering the account area.
+  and must pick a role at `/choose-role` before entering the account area. Choosing **Company** there
+  shows the same company fields as `/register` (`App\Support\CompanyFields` holds the shared rules and
+  normalisation), runs the registry check and continues to `/verify-phone`.
 - **Placeholders only**: `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` in `.env` are empty — flow is
   code-complete but needs real keys to test.
 

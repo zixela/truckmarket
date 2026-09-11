@@ -7,6 +7,8 @@ namespace App\Http\Controllers\Auth;
 use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\CompanyVerification\CompanyVerifier;
+use App\Support\CompanyFields;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -71,16 +73,41 @@ class GoogleAuthController extends Controller
         return view('auth.choose-role', ['roles' => UserRole::registerable()]);
     }
 
-    public function storeRole(Request $request): RedirectResponse
+    /** Same company rules as email registration: registry check, then SMS phone confirmation. */
+    public function storeRole(Request $request, CompanyVerifier $companyVerifier): RedirectResponse
     {
         $data = $request->validate([
             'role' => ['required', Rule::in(array_column(UserRole::registerable(), 'value'))],
+            ...CompanyFields::rules(),
         ]);
+
+        $isCompany = $data['role'] === UserRole::Company->value;
+        $companyVerifiedAt = null;
+
+        if ($isCompany) {
+            $result = $companyVerifier->verify($data['company_number'], $data['company_name']);
+
+            if ($result->isInvalid()) {
+                return back()
+                    ->withInput()
+                    ->withErrors(['company_number' => __('auth.company_invalid')]);
+            }
+
+            if ($result->isValid()) {
+                $companyVerifiedAt = now();
+            }
+        }
 
         $user = $request->user();
         $user->syncRoles([$data['role']]);
-        $user->forceFill(['needs_role_selection' => false])->save();
+        $user->forceFill([
+            ...CompanyFields::attributes($data),
+            'company_verified_at' => $companyVerifiedAt,
+            'needs_role_selection' => false,
+        ])->save();
 
-        return redirect()->route('account.listings.index');
+        return $isCompany
+            ? redirect()->route('verification.phone.notice')
+            : redirect()->route('account.listings.index');
     }
 }
