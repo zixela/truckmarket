@@ -163,7 +163,8 @@ sed -e "s|__SERVER_NAME__|${DOMAIN:-_}|g" -e "s|__APP_DIR__|${APP_DIR}|g" -e "s|
 # Behind the Cloudflare proxy the app must see the visitor's IP (login throttling, view counter),
 # not Cloudflare's. Only requests from Cloudflare's published ranges are rewritten, so this is
 # harmless when the site is not proxied.
-if cf_ranges="$(curl -fsSL https://www.cloudflare.com/ips-v4 https://www.cloudflare.com/ips-v6)"; then
+# The lists have no trailing newline, so fetch them separately with a newline in between.
+if cf_ranges="$(curl -fsSL https://www.cloudflare.com/ips-v4; echo; curl -fsSL https://www.cloudflare.com/ips-v6)"; then
     {
         echo "# Cloudflare edge ranges (fetched $(date -u +%F)); refresh by re-running provision.sh"
         for range in $cf_ranges; do echo "set_real_ip_from ${range};"; done
@@ -272,11 +273,9 @@ sed -e "s|__APP_USER__|${APP_USER}|g" -e "s|__APP_DIR__|${APP_DIR}|g" \
     "$SCRIPT_DIR/cron/truckmarket" > /etc/cron.d/truckmarket
 chmod 0644 /etc/cron.d/truckmarket
 systemctl daemon-reload
+nginx -t   # fail here, with nginx's own message, rather than inside systemctl
 systemctl enable --now "php${PHP_VERSION}-fpm" nginx truckmarket-queue
-systemctl restart "php${PHP_VERSION}-fpm"
-nginx -t
-systemctl reload nginx
-systemctl restart truckmarket-queue
+systemctl restart "php${PHP_VERSION}-fpm" nginx truckmarket-queue
 
 # ------------------------------------------------------------------ hardening
 log "Firewall, fail2ban, unattended upgrades"
@@ -312,3 +311,5 @@ cat <<EOF
    - releases: bash ${SCRIPT_DIR}/deploy.sh
    - queue worker logs: journalctl -u truckmarket-queue -f
 EOF
+cd /var/www/truckmarket
+sudo -u deploy php artisan tinker --execute="Mail::raw('TruckMarket test', fn(\$m) => \$m->to('tornike.tsikhelishvili@gmail.com')->subject('Test'));" && echo SENT

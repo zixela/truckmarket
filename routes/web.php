@@ -1,9 +1,11 @@
 <?php
 
+use App\Enums\ListingType;
 use App\Http\Controllers\Account;
 use App\Http\Controllers\Auth;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ListingController;
+use App\Http\Controllers\MailTestController;
 use App\Http\Controllers\MarketplaceController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\SetLocale;
@@ -26,10 +28,10 @@ Route::prefix('{locale}')
 
         // SEO listing pages: /en/trucks, /en/trucks/freightliner-cascadia-15
         Route::get('/{typeSlug}', [MarketplaceController::class, 'type'])
-            ->whereIn('typeSlug', \App\Enums\ListingType::slugs())
+            ->whereIn('typeSlug', ListingType::slugs())
             ->name('listings.type');
         Route::get('/{typeSlug}/{slugId}', [ListingController::class, 'show'])
-            ->whereIn('typeSlug', \App\Enums\ListingType::slugs())
+            ->whereIn('typeSlug', ListingType::slugs())
             ->where('slugId', '[a-z0-9\-]+')
             ->name('listings.show');
 
@@ -53,6 +55,7 @@ Route::prefix('{locale}')
         // Authenticated
         Route::middleware('auth')->group(function () {
             Route::post('/logout', [Auth\AuthenticatedSessionController::class, 'destroy'])->name('logout');
+            Route::get('/mail-test', MailTestController::class)->name('mail.test'); // admin only, see controller
 
             Route::get('/verify-email', [Auth\VerificationCodeController::class, 'notice'])->name('verification.notice');
             Route::post('/verify-email', [Auth\VerificationCodeController::class, 'verify'])->name('verification.verify');
