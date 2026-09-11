@@ -6,6 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', __('common.app_name')) — {{ __('common.app_name') }}</title>
     @yield('head')
+    <x-analytics />
     {{-- Apply the saved theme before the stylesheet loads so the page never flashes white. --}}
     <script>
         (function () {

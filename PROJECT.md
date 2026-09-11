@@ -203,7 +203,8 @@ Account (`auth` + `verified.code`): `account.listings.*` (CRUD + photos), `accou
 
 ## 9. Views
 
-Layout `layouts/app.blade.php` (topbar, locale switcher, flash). Components: `listing-card`, `stars`,
+Layout `layouts/app.blade.php` (topbar, locale switcher, flash, `<x-analytics />` = Google Analytics 4 tag
+rendered only when admin → Settings → `google_analytics_id` holds a valid `G-…` ID). Components: `listing-card`, `stars`,
 `flash`, `locale-switcher`. Home: type sidebar **with live counts** + Alpine-switched per-type filter
 forms (`partials/filters/{type}.blade.php`, shared ZIP/radius/price block in `_shared`) + 4-card preview
 rows per type. Marketplace: sidebar type list + filters, sort select, paginated grid.
