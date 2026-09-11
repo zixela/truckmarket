@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', __('common.app_name')) — {{ __('common.app_name') }}</title>
+    @if (\App\Models\Setting::bool('block_robots'))
+        <meta name="robots" content="noindex, nofollow">
+    @endif
     @yield('head')
     <x-analytics />
     {{-- Apply the saved theme before the stylesheet loads so the page never flashes white. --}}

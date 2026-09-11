@@ -8,12 +8,14 @@ use App\Http\Controllers\ListingController;
 use App\Http\Controllers\MailTestController;
 use App\Http\Controllers\MarketplaceController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RobotsController;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => redirect()->route('home', [
     'locale' => session('locale', config('app.locale')),
 ]));
+Route::get('/robots.txt', RobotsController::class)->name('robots');
 
 Route::prefix('{locale}')
     ->whereIn('locale', SetLocale::SUPPORTED)

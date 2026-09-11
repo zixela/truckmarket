@@ -190,6 +190,14 @@ Public (SEO URL scheme):
   auto-generated from title on save (Str::slug, regenerated on title change). Wrong/stale slug or type
   → 301 to canonical. Pages emit `<link rel=canonical>`, meta description, OG tags
   (`marketplace.blade` + `listings/show.blade` `@section('head')`).
+- **Sitemap:** `php artisan sitemap:generate` (`App\Services\SitemapGenerator`; scheduled hourly in
+  `routes/console.php`, also run by `deploy.sh`) writes `public/sitemap.xml` (index) +
+  `public/sitemaps/{pages,listings-N,profiles}.xml`: hreflang alternates en/ru + x-default, `lastmod`,
+  listing cover images, active listings only, 10 000 URLs per listing file. Generated files are gitignored.
+- **robots.txt is dynamic** (`RobotsController`, no static file in `public/`): admin → Settings →
+  `block_robots` = 1 (default after migration) hides the whole site (`Disallow: /` + `<meta name="robots"
+  content="noindex, nofollow">` on every page); 0 publishes the normal rules (account/auth/admin disallowed)
+  and the `Sitemap:` line.
 - Legacy 301 redirects: `/marketplace?type=x` → type page (`MarketplaceController::legacy`),
   `/listings/{id}` → canonical (`ListingController::legacy`).
 - `home`, `profile.show` (public user page). Detail page: gallery lightbox (Alpine), owner card w/ rating,

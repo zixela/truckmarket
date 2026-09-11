@@ -265,6 +265,7 @@ log "Laravel caches"
 run_app php artisan optimize
 run_app php artisan filament:optimize
 run_app php artisan translations:sync
+run_app php artisan sitemap:generate
 
 # ------------------------------------------------------------------ services
 log "Queue worker (systemd) and scheduler (cron)"

@@ -29,6 +29,7 @@ run_app php artisan optimize:clear
 run_app php artisan optimize
 run_app php artisan filament:optimize
 run_app php artisan translations:sync      # new lang/*.php keys -> admin-editable translations table
+run_app php artisan sitemap:generate       # also refreshed hourly by the scheduler
 
 systemctl reload "php${PHP_VERSION}-fpm"  # opcache.validate_timestamps=0: new code needs a reload
 run_app php artisan queue:restart
